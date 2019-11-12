@@ -41,6 +41,8 @@ const vehicleLayerModule = (() => {
             return;
 
         forEachArrayOrObject(data.vehicle, s => {
+            if (s.dirTag === undefined)
+                return;
             let popupText = s.dirTag.split("_").pop();
 
             _vehicleLayer.addLayer(

@@ -29,7 +29,7 @@ const routeLayerModule = (() => {
                 fillColor: "white",
                 fillOpacity: 1,
                 radius: 5
-            }).bindPopup(s.title);
+            }).bindPopup("<p>"+s.title+"</p>");
 
             stopMarker.stop = s;
             stopMarker.on("click", e => {

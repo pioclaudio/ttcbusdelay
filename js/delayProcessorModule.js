@@ -43,7 +43,7 @@ const delayProcessorModule = (() => {
         _getStopMarker = getStopMarker;
         stopInterval();
         getStopSchedule(agency, routeId);
-        _intervalId = setInterval(getStopSchedule, 10000, agency, routeId);
+        _intervalId = setInterval(getStopSchedule, 60000, agency, routeId);
     };
 
     const stopInterval = () => {
@@ -61,6 +61,8 @@ const delayProcessorModule = (() => {
 
         for (stop in groupbyStopDict) {
             let stopMarker = _getStopMarker(stop);
+            if (stopMarker === undefined)
+                continue;
             stopMarker.stop.schedule = groupbyStopDict[stop];
 
             predictionFactory().getPrediction(

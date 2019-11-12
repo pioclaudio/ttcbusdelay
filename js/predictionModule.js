@@ -69,6 +69,7 @@ const predictionFactory = () => {
                 ? _colorList.length - 1
                 : colorIndex;
         _stopMarker.setStyle({ fillColor: _colorList[colorIndex] });
+        _stopMarker.getPopup().setContent("<p>" + _stopMarker.stop.title + "<br>" + Math.round(minutesLate)+" min delay</p>")
     };
 
     const fetchData = (agency, routeId, stop) => {

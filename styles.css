@@ -39,7 +39,8 @@ body {
 
 .legend {
 	line-height: 18px;
-	color: #555;
+    color: #555;
+    padding: 6px 8px;
 }
 .legend i {
 	width: 18px;
