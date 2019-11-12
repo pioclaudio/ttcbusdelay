@@ -1,9 +1,9 @@
 
-const vehicleLayerModule = (vehicleLayer) => {
-    const vehicleIntervalId;
-    const busIcon = L.divIcon({ 
-        className: "fa fa-bus", 
-        iconAnchor: [12, 13] 
+const vehicleLayerModule = (() => {
+    let _vehicleLayer, _intervalId;
+    const busIcon = L.divIcon({
+        className: "fa fa-bus",
+        iconAnchor: [12, 13]
     });
     const navIcon = L.divIcon({
         className: "fa fa-map-marker",
@@ -18,14 +18,16 @@ const vehicleLayerModule = (vehicleLayer) => {
         }
     }
 
-    const startInterval = (agency, routeId) => {
+    const startInterval = (vehicleLayer, agency, routeId) => {
+        _vehicleLayer = vehicleLayer;
         stopInterval();
         getVehicleLocations(agency, routeId);
-        vehicleIntervalId = setInterval(getVehicleLocations, 10000, agency, routeId);
+        _intervalId = setInterval(getVehicleLocations, 10000, agency, routeId);
     };
 
     const stopInterval = () => {
-        clearInterval(vehicleIntervalId);
+        if (_intervalId)
+            clearInterval(_intervalId);
     };
 
     const getVehicleLocations = (agency, routeId) => {
@@ -34,37 +36,39 @@ const vehicleLayerModule = (vehicleLayer) => {
     };
 
     const processData = (data) => {
-        vehicleLayer.clearLayers();
+        _vehicleLayer.clearLayers();
         if (!("vehicle" in data))
             return;
-        
+
         forEachArrayOrObject(data.vehicle, s => {
-            vehicleLayer.addLayer(
+            let popupText = s.dirTag.split("_").pop();
+
+            _vehicleLayer.addLayer(
                 L.marker([s.lat, s.lon], {
                     icon: navIcon,
                     rotationAngle: 180 + Number(s.heading)
                 })
             );
-            vehicleLayer.addLayer(
+            _vehicleLayer.addLayer(
                 L.marker([s.lat, s.lon], { icon: busIcon })
-                .bindPopup(s.dirTag)
+                    .bindPopup(popupText)
             );
         });
     };
 
     const fetchData = (agency, routeId, epochTime) => {
         fetch(
-		`http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=${agency}&r=${routeId}&t=${epochTime}`
-	    ).then(function(response) {
+            `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=${agency}&r=${routeId}&t=${epochTime}`
+        ).then(function (response) {
             if (response.status !== 200) {
-                console.log( "Looks like there was a problem. Status Code: " + response.status );
+                console.log("Looks like there was a problem. Status Code: " + response.status);
                 return;
             }
+            response.json().then(processData);
         })
-        response.json().then(processData);
-    }
+    };
 
-    return {startInterval, stopInterval};
-}
+    return { startInterval, stopInterval };
+})();
 
 export { vehicleLayerModule };
