@@ -17,29 +17,30 @@ var baseMap = L.tileLayer(
 
 var info = L.control();
 info.onAdd = function (map) {
-    this._div = L.DomUtil.create("div", "info");
-    this.update();
-    return this._div;
-};
-info.update = function (props) {
-    this._div.innerHTML =
+    let div = L.DomUtil.create("div", "info");
+    div.innerHTML =
         "<h4>TTC Realtime Bus Delay (minutes)</h4>" +
         '<select id="routeSelect"></select>';
+    return div;
 };
 info.addTo(mymap);
 
 var legend = L.control({ position: "bottomright" });
 legend.onAdd = function (map) {
-    var div = L.DomUtil.create("div", "info legend"),
+    let div = L.DomUtil.create("div", "info legend"),
         grades = [0, 5, 10, 15, 20];
+    let content = "<ul>"
     for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' +
+        content +=
+            '<li><i style="background:' +
             colorList[grades[i] / 5] +
             '"></i> ' +
             grades[i] +
-            (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+            (grades[i + 1] ? "&ndash;" + grades[i + 1] : "+") +
+            '</li>';
     }
+    content += "</ul>";
+    div.innerHTML = content;
     return div;
 };
 legend.addTo(mymap);
