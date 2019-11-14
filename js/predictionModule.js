@@ -1,6 +1,7 @@
 const predictionFactory = () => {
-    let _stopMarker;
+    let _stop, _stopMarker;
     let _colorList;
+    let _delayMinutes;
 
     const getRelativeDayTime = src =>
         moment(
@@ -60,22 +61,26 @@ const predictionFactory = () => {
             )
         );
 
-        let minutesLate = moment
+        _delayMinutes = moment
             .duration(pred.diff(closestSchedule))
             .asMinutes();
-        let colorIndex = Math.round(minutesLate / 5);
+        let colorIndex = Math.round(_delayMinutes / 5);
         colorIndex =
             colorIndex >= _colorList.length
                 ? _colorList.length - 1
                 : colorIndex;
         _stopMarker.setStyle({ fillColor: _colorList[colorIndex] });
-        _stopMarker.getPopup().setContent("<p>" + _stopMarker.stop.title + "<br>" + Math.round(minutesLate)+" min delay</p>")
+        _stopMarker.getPopup().setContent("<p>" + _stopMarker.stop.title + "<br>" + Math.round(_delayMinutes) + " min delay</p>")
+        return Promise.resolve({
+            "stop": _stop,
+            "delay": _delayMinutes
+        });
     };
 
     const fetchData = (agency, routeId, stop) => {
-        fetch(
+        return fetch(
             `http://webservices.nextbus.com/service/publicJSONFeed?command=predictions&a=${agency}&r=${routeId}&s=${stop}`
-        ).then(function (response) {
+        ).then(response => {
             if (response.status !== 200) {
                 console.log(
                     "Looks like there was a problem. Status Code: " +
@@ -83,14 +88,15 @@ const predictionFactory = () => {
                 );
                 return;
             }
-            response.json().then(processData);
+            return response.json().then(processData);
         });
     };
 
     const getPrediction = (agency, routeId, stop, stopMarker, colorList) => {
         _stopMarker = stopMarker;
         _colorList = colorList;
-        fetchData(agency, routeId, stop);
+        _stop = stop;
+        return fetchData(agency, routeId, stop);
     };
 
     return { getPrediction };

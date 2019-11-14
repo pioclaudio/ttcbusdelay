@@ -25,6 +25,7 @@ body {
 }
 
 .info {
+    overflow: auto;
 	padding: 6px 8px;
 	font: 14px/16px Arial, Helvetica, sans-serif;
 	background: white;
@@ -38,6 +39,7 @@ body {
 }
 
 .legend {
+    overflow: auto;
 	line-height: 18px;
     color: #555;
     padding: 6px 8px;

@@ -61,7 +61,7 @@ const vehicleLayerModule = (() => {
     const fetchData = (agency, routeId, epochTime) => {
         fetch(
             `http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=${agency}&r=${routeId}&t=${epochTime}`
-        ).then(function (response) {
+        ).then(response => {
             if (response.status !== 200) {
                 console.log("Looks like there was a problem. Status Code: " + response.status);
                 return;
