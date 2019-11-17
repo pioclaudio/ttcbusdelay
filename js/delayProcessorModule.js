@@ -7,6 +7,7 @@ const delayProcessorModule = (() => {
     let _getStopMarker;
     let _colorList;
     let _directionStops;
+    let serviceClassList = ["wkd", "wkd", "wkd", "wkd", "wkd", "sat", "sun"];
 
     const getRelativeDayTime = src =>
         moment(
@@ -61,8 +62,10 @@ const delayProcessorModule = (() => {
     const processData = data => {
         delayInterpolator.reset();
         let groupbyStopDict = {};
-        groupbyStop(data.route[0].tr, groupbyStopDict);
-        groupbyStop(data.route[1].tr, groupbyStopDict); //opposite direction
+        let serviceClass = serviceClassList[moment().isoWeekday()];
+
+        let activeRoutes = data.route.filter( route => route.serviceClass === serviceClass);
+        activeRoutes.forEach(route => groupbyStop(route.tr, groupbyStopDict));
 
         let promiseArray = [];
         for (stop in groupbyStopDict) {

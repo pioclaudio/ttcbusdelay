@@ -24,6 +24,16 @@ body {
     color:grey
 }
 
+.fa-info-circle {
+    font-size: 30px;
+    color: white;
+    opacity: 0.8;
+    cursor: pointer;
+}
+.fa-info-circle:hover {
+    color: #777;
+}
+
 .info {
     overflow: auto;
 	padding: 6px 8px;
@@ -60,4 +70,26 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+div.content {
+    padding: 0px;
+    margin: 15px 20px;
+}
+
+div.content h3 {
+    margin: 5px 0px;
+}
+
+div.content p {
+    margin: 5px 20px;
+}
+
+.promptButtons {
+    display: none
+}
+
+h2.title {
+    padding: 10px 10px;
+    margin: 0px;
 }

@@ -45,9 +45,34 @@ legend.onAdd = function (map) {
 };
 legend.addTo(mymap);
 
+
+L.Control.Info = L.Control.extend({
+    onAdd: function (map) {
+        let div = L.DomUtil.create('div');
+
+        div.innerHTML = '<i class="fa fa-info-circle"></i>';
+
+        div.onclick = (e) => {
+            modal.show();
+        }
+        return div;
+    },
+
+});
+
+var info = new L.Control.Info({ position: 'bottomleft' }).addTo(mymap);
+var modal = L.control.window(mymap, { 
+    title: 'About',
+    content: '<p>This app shows the delay of a bus from a scheduled stop</p> <h3>Usage</h3> <p>Click a stop to see more information</p>  <h3>Data</h3> <p>NextBus</p> <h3>Feedback</h3><p>me@pioclaudio.com</p>',
+    modal: true
+});
+
 var stopLayer = L.layerGroup([]).addTo(mymap);
 var pathLayer = L.layerGroup([]).addTo(mymap);
 var vehicleLayer = L.layerGroup([]).addTo(mymap);
+
+// let promptButton = document.querySelector(".promptButtons").disabled = true;
+// console.log(promptButton);
 
 //---------------------------------------------------------------------------
 // var baseMaps = {
