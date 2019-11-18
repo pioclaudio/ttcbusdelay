@@ -93,3 +93,7 @@ h2.title {
     padding: 10px 10px;
     margin: 0px;
 }
+
+.leaflet-control-attribution {
+    display: none;
+}

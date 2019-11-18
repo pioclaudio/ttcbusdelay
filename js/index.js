@@ -6,8 +6,7 @@ var mymap = L.map("mapid").setView([43.653908, -79.384293], 13);
 var baseMap = L.tileLayer(
     "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
     {
-        attribution:
-            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        attributionControl: false,
         maxZoom: 18,
         id: "mapbox.streets",
         accessToken:
@@ -63,16 +62,13 @@ L.Control.Info = L.Control.extend({
 var info = new L.Control.Info({ position: 'bottomleft' }).addTo(mymap);
 var modal = L.control.window(mymap, { 
     title: 'About',
-    content: '<p>This app shows the delay of a bus from a scheduled stop</p> <h3>Usage</h3> <p>Click a stop to see more information</p>  <h3>Data</h3> <p>NextBus</p> <h3>Feedback</h3><p>me@pioclaudio.com</p>',
+    content: '<p>This app shows the delay of a bus from a scheduled stop.</p> <h3>Usage</h3> <p><ol><li> Select a route from the drop down menu.</li> <li> Stops are shown in a color representing the delay of bus arrival. Refer to legend.</li> <li>Click a stop to see detailed information.</li></ol></p>  <h3>Data</h3> <p>Bus data from nextbus.com.</p> <h3>Disclaimer</h3> <p>The website makes no warranty, expressed or implied, as to the results obtained from the use of the information on the website. The website shall have no liability for the accuracy of the information and cannot be held liable for any third-party claims or losses of any damages.</p><h3>Feedback</h3><p>me@pioclaudio.com</p>',
     modal: true
 });
 
 var stopLayer = L.layerGroup([]).addTo(mymap);
 var pathLayer = L.layerGroup([]).addTo(mymap);
 var vehicleLayer = L.layerGroup([]).addTo(mymap);
-
-// let promptButton = document.querySelector(".promptButtons").disabled = true;
-// console.log(promptButton);
 
 //---------------------------------------------------------------------------
 // var baseMaps = {
