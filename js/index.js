@@ -3,16 +3,14 @@ import { routeListModule } from "./routeListModule.js";
 const colorList = ["#fef0d9", "#fdcc8a", "#fc8d59", "#e34a33", "#b30000"];
 
 var mymap = L.map("mapid").setView([43.653908, -79.384293], 13);
-var baseMap = L.tileLayer(
-    "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
-    {
-        attributionControl: false,
-        maxZoom: 18,
-        id: "mapbox.streets",
-        accessToken:
-            "pk.eyJ1IjoibGJzaGlybyIsImEiOiJjajh2dW52eWUxZzQ0MnhxejdmaGpmcWJ6In0.L8rJt1jyN5m0yyaDi-MddA"
-    }
-).addTo(mymap);
+var accessToken = 'pk.eyJ1IjoiYnNoaXJvIiwiYSI6ImNpbHZxbmRrNDAxbW10eWtydjh6bGZyeXQifQ.Qw9BoP7S9dlGj9DY4khofA';
+
+var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + accessToken, {
+  attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  tileSize: 512,
+  zoomOffset: -1
+}).addTo(mymap);
+
 
 var info = L.control();
 info.onAdd = function (map) {
@@ -84,4 +82,15 @@ var vehicleLayer = L.layerGroup([]).addTo(mymap);
 
 
 routeListModule.init(stopLayer, pathLayer, vehicleLayer, mymap, colorList);
+mymap.locate({ setView: true, maxZoom: 16 });
 
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(mymap)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(mymap);
+}
+
+mymap.on('locationfound', onLocationFound);
