@@ -82,15 +82,15 @@ var vehicleLayer = L.layerGroup([]).addTo(mymap);
 
 
 routeListModule.init(stopLayer, pathLayer, vehicleLayer, mymap, colorList);
-mymap.locate({ setView: true, maxZoom: 16 });
+// mymap.locate({ setView: true, maxZoom: 16 });
 
-function onLocationFound(e) {
-    var radius = e.accuracy;
+// function onLocationFound(e) {
+//     var radius = e.accuracy;
 
-    L.marker(e.latlng).addTo(mymap)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+//     L.marker(e.latlng).addTo(mymap)
+//         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-    L.circle(e.latlng, radius).addTo(mymap);
-}
+//     L.circle(e.latlng, radius).addTo(mymap);
+// }
 
-mymap.on('locationfound', onLocationFound);
+// mymap.on('locationfound', onLocationFound);
